@@ -21,7 +21,8 @@ class Ortho:
         return v/norm
     
     
-    def householder(self,A):
+    def householder(self):
+        A = self.A
         Q = np.identity(self.m)
         R = np.copy(A)
         
