@@ -34,5 +34,9 @@ class Ortho:
             v = np.transpose(np.array(v))
             H = np.identity(self.m) - 2*v*np.transpose(v)/Ortho.norm(v)**2
             R = np.dot(H,R) 
-            Q = np.dot(H,Q) 
+            Q = np.dot(H,Q)
+           
+        Q = npl.inv(Q) # Ah, pero Q era la inversa
+        return(Q,R) # Retorno!
+    
             
