@@ -36,6 +36,3 @@ class Ortho:
             R = np.dot(H,R) 
             Q = np.dot(H,Q) 
             
-A = [[12, -51, 4], [6, 167, -68], [-4, 24, -41]]
-Q, R = Ortho.householder(A)
-
