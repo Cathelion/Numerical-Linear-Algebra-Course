@@ -5,7 +5,7 @@ Created on Fri Sep 11 12:29:32 2020
 @author: duyp9
 """
 import numpy as np
-
+import numpy.linalg as npl
 
 class Ortho:
     
@@ -36,7 +36,7 @@ class Ortho:
             R = np.dot(H,R) 
             Q = np.dot(H,Q)
            
-        Q = npl.inv(Q) # Ah, pero Q era la inversa
-        return(Q,R) # Retorno!
+        Q = npl.inv(Q)  # not sure why this u should do this??? 
+        return(Q,R) 
     
             
