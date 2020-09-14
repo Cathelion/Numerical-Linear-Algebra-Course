@@ -64,7 +64,6 @@ class Ortho:
         A = self.A
         m = self.m
         n = self.n
-        pass       
         A_i = A
         Q = np.eye(m)
         for i in range(n):
@@ -83,10 +82,12 @@ def QR_test():
         A = np.random.rand(n+2,n)
         Ort1 = Ortho(A)
         Q1, R1 = Ort1.qr()
+        A_err = np.linalg.norm(A-Q1@R1,2)
+        QI_err = np.linalg.norm(Q1.T@Q1-np.identity(n),2)
         Q2, R2 = np.linalg.qr(A)
         Q_err = np.linalg.norm(np.abs(Q1)-np.abs(Q2),2)
         R_err = np.linalg.norm(np.abs(R1)-np.abs(R2),2)
-        print("Dimension:",n,"  -  Q error: ", Q_err, "   R error: ", R_err)
+        print("Dimension:",n,"\n >A-QR error: ", A_err,"\n >I-QQ.T err: ",QI_err, "\n >Q error: ", Q_err, "\n >R error: ", R_err, "\n\n")
  
 # testing and plotting of the errors of GS            
 def test_and_plot():
