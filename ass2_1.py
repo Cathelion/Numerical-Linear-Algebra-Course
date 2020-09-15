@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Sep 10 15:31:32 2020
-
 @author: florian
 """
 import numpy as np
@@ -60,7 +59,7 @@ class Ortho:
         return Q
     
     # computes QR factorization
-    def qr(self):
+    def qr_house(self):
         A = self.A
         m = self.m
         n = self.n
@@ -73,7 +72,33 @@ class Ortho:
             A_i = H_i @ A_i
             Q = Q @ H_i.T
         return Q[:,:n], A_i[:n,:]
-            
+    
+    # help function to compute the givens matrix
+    def giveM(self,x,y,i,j):
+        M = np.eye(self.m)
+        c = x/np.sqrt(x**2+y**2)
+        s = -y/np.sqrt(x**2+y**2)
+        M[i,i] = c
+        M[j,j] = c
+        M[i,j] = -s
+        M[j,i] = s
+        return M
+    
+    # calculate the QR-Factorization with Givens method
+    def qr_givens(self):
+        A = self.A
+        m = self.m
+        n = self.n
+        A_i = A
+        Q = np.eye(m)
+        for i in range(n):
+            for j in range(i+1,m):
+                a = A_i[i,i]
+                b = A_i[j,i]
+                T_ij = self.giveM(a,b,i,j)
+                A_i = T_ij @ A_i  # T_ij mxm and A_i mxn so get new mxn
+                Q = Q @ T_ij.T 
+        return Q[:,:n], A_i[:n,:]
         
 # test own QR against built-in
 def QR_test():
@@ -81,7 +106,7 @@ def QR_test():
     for n in N:
         A = np.random.rand(n+2,n)
         Ort1 = Ortho(A)
-        Q1, R1 = Ort1.qr()
+        Q1, R1 = Ort1.qr_house()
         A_err = np.linalg.norm(A-Q1@R1,2)
         QI_err = np.linalg.norm(Q1.T@Q1-np.identity(n),2)
         Q2, R2 = np.linalg.qr(A)
@@ -128,12 +153,4 @@ def test_and_plot():
     plt.xlabel("Dimension")
     plt.ylabel("Difference to determinant")
     plt.legend()
-        
-        
-        
-        
-        
-        
-        
-
         
